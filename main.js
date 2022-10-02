@@ -21,18 +21,15 @@
 3 - посмотреть всех животных по определенному типу
 > Вид
 4 - посмотреть вообще всех животных
-> Вывести тип и имя животного
 5 - показать 3 самых старых животных в зоопарке
 6 - показать сколько клеток еще свободно
 7 - показать информацию об конкретном животном по имени
 > Имя
+>> Медведь Сергей Место обитания  Сейчас ноходится в спячке
 8 - выйти
 
 ООП + Инкапсуляция Наследование и Полиморфизм
 */
-
-
-
 
 
 function checkFieldAndAbility(name, age, kind){
@@ -73,10 +70,10 @@ function checkFieldAndAbility(name, age, kind){
 
 }
 
-
-
 function Zoopark(){
-    this.__case = []
+    this.__case = [
+        
+    ]
     this.getLengthCase = function(){
         return this.__case.length
     }
@@ -85,6 +82,36 @@ function Zoopark(){
             this.__case.push(animal)
         }
     }
+    this.setRemoveAnimal = function(name, kind){
+        if(name == '' || kind == '') return false
+        let chek = false
+        this.__case.forEach((sortAnimal, idx)=>{
+            if(sortAnimal.getName() == name && sortAnimal.getKind() == kind){
+                this.__case.splice(idx, 1)
+                chek = true
+            }
+        })
+        return chek
+    }
+    this.getTitle = function(kind){
+        if(kind == 1) return `птица`
+        if(kind == 2) return `волк`
+        if(kind == 3) return `медведь`
+        if(kind == 4) return `дельфин`
+    }
+    this.getShowSpecialKind = function(kind){
+        let title = this.getTitle(kind)
+        let result = `${title}\n`
+        let chek = false
+        this.__case.forEach(sortKind=>{
+            if(sortKind.getKind() == kind){
+                result += `${sortKind.getName()} - возраст: ${sortKind.getAge()}\n`
+                chek = true
+            }
+        })
+        if(chek == false) return `Не найдено`
+        return result
+    }
 }
 
 function Animal(name, age, kind, ability, zoopark){
@@ -92,16 +119,24 @@ function Animal(name, age, kind, ability, zoopark){
     this.__name = name
     this.__age = age
     this.__ability = ability
+    this.getName = function(){return this.__name}
+    this.getKind = function(){return this.__kind}
+    this.getAge = function(){return this.__age}
     zoopark.setAddAnimal(this)
 }
 
 let zoopark = new Zoopark()
+
+let swist = new Animal('Свист', 30, 1, `160 5000`, zoopark)
+let shebet = new Animal('Щебет', 2, 1, `60 1000`, zoopark)
+let misha = new Animal('Миша', 3, 3, `России 2`, zoopark)
+
 let menu
 
 do{
     menu = +prompt('Зоопарк\n 1 - добавить животное\n 2 - удалить животное\n 3 - посмотреть всех животных по определенному типу\n 4 - посмотреть вообще всех животных\n 5 - показать 3 самых старых животных в зоопарке\n 6 - показать сколько клеток еще свободно\n 7 - показать информацию об конкретном животном по имени\n 8 - выйти\n')
     switch(menu){
-        case 1:{
+        case 1:{    //add Animal
             if(zoopark.getLengthCase() >= 5) break
             let name = prompt('Кличка')
             let age = +prompt('Возраст')
@@ -114,13 +149,20 @@ do{
             const newAnimal = new Animal(name, age, kind, ability, zoopark)
             break
         }
-        case 2:{
+        case 2:{    //remove Animal
+            if(zoopark.getLengthCase() == 0) break
+            let name = prompt('Имя животного')
+            let kind = prompt('Вид\n 1 - Птица\n 2 - Волк\n 3 - Медведь\n 5 - Дельфин')
+            zoopark.setRemoveAnimal(name, kind) ? console.log('Увезен') : console.log('Не найден')
             break
         }
-        case 3:{
+        case 3:{    //show Type Animal
+            let kind = +prompt('Вид\n 1 - Птица\n 2 - Волк\n 3 - Медведь\n 5 - Дельфин')
+            if(kind == 1 || kind == 2 || kind == 3 || kind == 4) console.log(zoopark.getShowSpecialKind(kind))
             break
         }
         case 4:{
+            
             break
         }
         case 5:{
