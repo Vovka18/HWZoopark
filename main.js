@@ -40,23 +40,34 @@ function checkFieldAndAbility(name, age, kind){
 
         if(ability1 == '' || ability2 == '' || isNaN(Number(ability1)) == true || isNaN(Number(ability2)) == true) return false
 
-        return `${ability1} ${ability2}`
+        return `максимальная скорость полета достигает ${ability1} км ч, а дальность зрения достигает ${ability2} метров`
     }
     else if(kind == 2){  //Волк
         let ability1 = +prompt('Статус:\n 1 - Вожак\n 1 - Не вожак')
         let ability2 = +prompt(' 1 - Надресирован\n 2 - Не надресирован')
 
-        if(ability1 == 1 || ability1 == 2 && ability2 == 1 || ability2 == 2){
-            return `${ability1} ${ability2}`
-        }
+        if(ability1 == 1) ability1 = `вожак`
+        else if(ability1 == 2) ability1 = `не вожак`
         else return false
+
+        if(ability2 == 1) ability2 = `дресирован`
+        else if(ability2 == 2) ability2 = `не дресирован`
+        else return false
+
+        return `этот волк ${ability1}, и он ${ability2}`
+
+        
     }
     else if(kind == 3){  //Медведь
         let ability1 = prompt('Обитает в:')
         let ability2 = +prompt('Статус": \n 1 - В спячке \n 2 - Не в спячке')
 
-        if(ability2 == 1 || ability2 == 2 && ability1 != '') return `${ability1} ${ability2}`
+        if(ability1 == '') return false
+
+        if(ability2 == 1) ability1 = `в спячке`
+        else if(ability2 == 2) ability2 = `в спячке`
         else return false
+        return `этот вид медведей обитает в ${ability1} сейчас медведь ${ability2}`
     }
     else if(kind == 4){  //Дельфин
         let ability1 = +prompt('Введите скорость плавания')
@@ -64,7 +75,7 @@ function checkFieldAndAbility(name, age, kind){
         
         if(ability1 == '' || ability2 == '' || isNaN(Number(ability1)) == true || isNaN(Number(ability2)) == true) return false
 
-        return `${ability1} ${ability2}`
+        return `максимальная скорость ${ability1}, а услышать своих сверстников он может на расстоянии ${ability2} метров`
     }
     else return false
 
@@ -112,6 +123,11 @@ function Zoopark(){
         if(chek == false) return `Не найдено`
         return result
     }
+    this.getShowAllAnimal = function(){
+        this.__case.forEach(showAnimal=>{
+            console.log(`Вид - ${this.getTitle(showAnimal.getKind())}. Имя ${showAnimal.getName()} возраст ${showAnimal.getAge()} ${showAnimal.getAbility()}`)
+        })
+    }
 }
 
 function Animal(name, age, kind, ability, zoopark){
@@ -122,14 +138,16 @@ function Animal(name, age, kind, ability, zoopark){
     this.getName = function(){return this.__name}
     this.getKind = function(){return this.__kind}
     this.getAge = function(){return this.__age}
+    this.getAbility = function(){return this.__ability}
     zoopark.setAddAnimal(this)
 }
 
 let zoopark = new Zoopark()
 
-let swist = new Animal('Свист', 30, 1, `160 5000`, zoopark)
-let shebet = new Animal('Щебет', 2, 1, `60 1000`, zoopark)
-let misha = new Animal('Миша', 3, 3, `России 2`, zoopark)
+//test
+let swist = new Animal('Свист', 30, 1, `максимальная достигает скорость полета достигает 360  км ч, а дальность зрения достигает 3000 метров`, zoopark)
+let shebet = new Animal('Щебет', 22, 1, `максимальная достигает скорость полета достигает 320  км ч, а дальность зрения достигает 2000 метров`, zoopark)
+let misha = new Animal('Миша', 3, 3, `этот вид медведей обитает в Финляндии сейчас медведь не в спячке`, zoopark)
 
 let menu
 
@@ -162,10 +180,11 @@ do{
             break
         }
         case 4:{
-            
+            if(zoopark.getLengthCase != 0) zoopark.getShowAllAnimal()
             break
         }
         case 5:{
+            
             break
         }
         case 6:{
