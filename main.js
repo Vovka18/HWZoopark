@@ -35,39 +35,31 @@
 
 
 
-
 function checkFieldAndAbility(name, age, kind){
     if(name == '' || age == '' || isNaN(Number(age)) == true || kind == ''|| kind.length != 1 || kind > 4 || kind < 1 || isNaN(Number(kind)) == true) return false
     if(kind == 1){  //птица
         let ability1 = +prompt('Введите максимальную скорость полета км/ч')
         let ability2 = +prompt('Введите дальность зрения в m')
-        if(ability1 == '' || ability2 == '' || isNaN(Number(ability1)) == true || isNaN(Number(ability2)) == true) return false
-        return `Максимальная скорость полета: ${ability1}, а дальность зрения ${ability2} метра`
 
+        if(ability1 == '' || ability2 == '' || isNaN(Number(ability1)) == true || isNaN(Number(ability2)) == true) return false
+
+        return `${ability1} ${ability2}`
     }
     else if(kind == 2){  //Волк
         let ability1 = +prompt('Статус:\n 1 - Вожак\n 1 - Не вожак')
         let ability2 = +prompt(' 1 - Надресирован\n 2 - Не надресирован')
-        if(ability1 == 1) ability1 = `Вожак`
-        else if(ability1 == 2) ability1 = `не вожак`
-        else return false
 
-        if(ability2 == 1) ability2 = `надресирован`
-        else if(ability2 == 2) ability2 = `не надресирован` 
+        if(ability1 == 1 || ability1 == 2 && ability2 == 1 || ability2 == 2){
+            return `${ability1} ${ability2}`
+        }
         else return false
-        
-        return `Этот Волк ${ability1}, и он *${ability2}`
     }
     else if(kind == 3){  //Медведь
         let ability1 = prompt('Обитает в:')
         let ability2 = +prompt('Статус": \n 1 - В спячке \n 2 - Не в спячке')
 
-        if(ability1 == '') return false
-
-        else if(ability2 == 1) ability2 = `в спячке`
-        else if(ability2 == 2) ability2 = `не в спячке`
+        if(ability2 == 1 || ability2 == 2 && ability1 != '') return `${ability1} ${ability2}`
         else return false
-        return `Этот медведь обитает в ${ability1}, и сейчас он ${ability2}`
     }
     else if(kind == 4){  //Дельфин
         let ability1 = +prompt('Введите скорость плавания')
@@ -75,7 +67,7 @@ function checkFieldAndAbility(name, age, kind){
         
         if(ability1 == '' || ability2 == '' || isNaN(Number(ability1)) == true || isNaN(Number(ability2)) == true) return false
 
-        return `Этот дельфин плавает со скоростью ${ability1}, а радиус слуха у него ${ability2} метра`
+        return `${ability1} ${ability2}`
     }
     else return false
 
@@ -89,12 +81,8 @@ function Zoopark(){
         return this.__case.length
     }
     this.setAddAnimal = function(animal){
-        console.log(animal)
         if(this.__case.length <= 4){
-            console.log(animal)
-            console.log('yes')
             this.__case.push(animal)
-            console.log(this.__case[0])
         }
     }
 }
