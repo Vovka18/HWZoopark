@@ -23,30 +23,26 @@
 4 - посмотреть вообще всех животных
 5 - показать 3 самых старых животных в зоопарке
 
-{name: 'Миша', age: 5, kind: 3}
-{name: 'Андрей', age: 10, kind: 3}
-{name: 'Стёпа', age: 2, kind: 3}
-
-1. Аднрей возраст 10
-
-
 6 - показать сколько клеток еще свободно
 7 - показать информацию об конкретном животном по имени
 > Имя
->> Медведь Сергей Место обитания  Сейчас ноходится в спячке
+>> Медведь Сергей Место обитания  Сейчас находится в спячке
 8 - выйти
 
 ООП + Инкапсуляция Наследование и Полиморфизм
 */
-
+/*
+Object.prototype.chekNum = function(){
+    return isNaN(Number(this))
+}
 
 function checkFieldAndAbility(name, age, kind){
-    if(name == '' || age == '' || isNaN(Number(age)) == true || kind == ''|| kind.length != 1 || kind > 4 || kind < 1 || isNaN(Number(kind)) == true) return false
+    if(name == '' || age == '' || age.chekNum() == true || kind == ''|| kind.length != 1 || kind > 4 || kind < 1 || kind.chekNum() == true) return false
     if(kind == 1){  //птица
         let ability1 = +prompt('Введите максимальную скорость полета км/ч')
         let ability2 = +prompt('Введите дальность зрения в m')
 
-        if(ability1 == '' || ability2 == '' || isNaN(Number(ability1)) == true || isNaN(Number(ability2)) == true) return false
+        if(ability1 == '' || ability2 == '' || ability1.chekNum() == true || ability2.chekNum() == true) return false
 
         return `максимальная скорость полета достигает ${ability1} км ч, а дальность зрения достигает ${ability2} метров`
     }
@@ -81,7 +77,7 @@ function checkFieldAndAbility(name, age, kind){
         let ability1 = +prompt('Введите скорость плавания')
         let ability2 = +prompt('Введите дальность слуха')
         
-        if(ability1 == '' || ability2 == '' || isNaN(Number(ability1)) == true || isNaN(Number(ability2)) == true) return false
+        if(ability1 == '' || ability2 == '' || ability1.chekNum() == true || ability2.chekNum() == true) return false
 
         return `максимальная скорость ${ability1}, а услышать своих сверстников он может на расстоянии ${ability2} метров`
     }
@@ -142,7 +138,7 @@ function Zoopark(){
     }
     this.getInfoAnimal = function(name){
         searchAnimal = this.__case.find(sortAnimal => sortAnimal.getName() == name)
-            console.log(`${searchAnimal.getName()} ${this.getTitle(searchAnimal.getKind())} возраст ${searchAnimal.getAge()} ${searchAnimal.getAbility()}`)
+            console.log(`${searchAnimal.getName()} ${this.getTitle(searchAnimal.getKind())} возраст ${searchAnimal.getAge()}, ${searchAnimal.getAbility()}`)
     }
 }
 
@@ -150,12 +146,17 @@ function Animal(name, age, kind, ability, zoopark){
     this.__kind = kind
     this.__name = name
     this.__age = age
+    Ability.call(ability)
     this.__ability = ability
     this.getName = function(){return this.__name}
     this.getKind = function(){return this.__kind}
     this.getAge = function(){return this.__age}
     this.getAbility = function(){return this.__ability}
     zoopark.setAddAnimal(this)
+}
+// Наследование
+function Ability(ability){
+    this.__ability = ability
 }
 
 let zoopark = new Zoopark()
@@ -174,7 +175,7 @@ do{
             if(zoopark.getLengthCase() >= 5) break
             let name = prompt('Кличка')
             let age = +prompt('Возраст')
-            let kind = prompt('Вид\n 1 - Птица\n 2 - Волк\n 3 - Медведь\n 5 - Дельфин')
+            let kind = prompt('Вид\n 1 - Птица\n 2 - Волк\n 3 - Медведь\n 4 - Дельфин')
             let ability = checkFieldAndAbility(name, age, kind)
             if(ability == false){
                 console.log('Ошибка ability')
@@ -215,3 +216,52 @@ do{
         }
     }
 }while(menu != 8)
+*/
+
+
+
+
+
+/*
+1 - Открыть счет в банке
+    - генерируется номер карты (на разобраться самому) 
+    - запрошивается пинкод
+2 - Пополнить счет в банке
+    - запрашивается сумма пополнения
+    - запрашивается номер карты
+3 - Снять деньги с карты
+    - запрашивается сумма снятия
+    - пин код
+    - номер карты
+    - с карты снимается 1 % комиссии. 
+4 - переслать деньги на другую карту
+    - запрашивается карта кому
+    - запрашивается карта твоя
+    - запрашивается пин код
+    - запрашивается сумма
+    - 3% снимается доп за пересылку
+5 - Посмотреть счет в банке
+    - карта 
+    - пинкод
+6 - Выйти
+
+
+предусмотреть снятия со счета больше чем есть
+пополнения на отрицательное число
+учитывать коммисссию
+проверять реальность карт
+проверять авторизацию
+и т.д
+*/
+
+
+// function Bank(){
+//     this.__clients = []
+// }
+
+
+
+
+
+
+
