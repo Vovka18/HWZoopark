@@ -22,6 +22,14 @@
 > Вид
 4 - посмотреть вообще всех животных
 5 - показать 3 самых старых животных в зоопарке
+
+{name: 'Миша', age: 5, kind: 3}
+{name: 'Андрей', age: 10, kind: 3}
+{name: 'Стёпа', age: 2, kind: 3}
+
+1. Аднрей возраст 10
+
+
 6 - показать сколько клеток еще свободно
 7 - показать информацию об конкретном животном по имени
 > Имя
@@ -82,9 +90,7 @@ function checkFieldAndAbility(name, age, kind){
 }
 
 function Zoopark(){
-    this.__case = [
-        
-    ]
+    this.__case = []
     this.getLengthCase = function(){
         return this.__case.length
     }
@@ -106,9 +112,9 @@ function Zoopark(){
     }
     this.getTitle = function(kind){
         if(kind == 1) return `птица`
-        if(kind == 2) return `волк`
-        if(kind == 3) return `медведь`
-        if(kind == 4) return `дельфин`
+        else if(kind == 2) return `волк`
+        else if(kind == 3) return `медведь`
+        else if(kind == 4) return `дельфин`
     }
     this.getShowSpecialKind = function(kind){
         let title = this.getTitle(kind)
@@ -128,6 +134,16 @@ function Zoopark(){
             console.log(`Вид - ${this.getTitle(showAnimal.getKind())}. Имя ${showAnimal.getName()} возраст ${showAnimal.getAge()} ${showAnimal.getAbility()}`)
         })
     }
+    this.getThreeOldAnimals = function(){
+        this.__case.sort((age1, age2)=>age2.getAge() - age1.getAge())
+        console.log(`${this.getTitle(this.__case[0].getKind())} - ${this.__case[0].getName()} ${this.__case[0].getAge()}`)
+        console.log(`${this.getTitle(this.__case[1].getKind())} - ${this.__case[1].getName()} ${this.__case[1].getAge()}`)
+        console.log(`${this.getTitle(this.__case[2].getKind())} - ${this.__case[2].getName()} ${this.__case[2].getAge()}`)
+    }
+    this.getInfoAnimal = function(name){
+        searchAnimal = this.__case.find(sortAnimal => sortAnimal.getName() == name)
+            console.log(`${searchAnimal.getName()} ${this.getTitle(searchAnimal.getKind())} возраст ${searchAnimal.getAge()} ${searchAnimal.getAbility()}`)
+    }
 }
 
 function Animal(name, age, kind, ability, zoopark){
@@ -145,8 +161,8 @@ function Animal(name, age, kind, ability, zoopark){
 let zoopark = new Zoopark()
 
 //test
-let swist = new Animal('Свист', 30, 1, `максимальная достигает скорость полета достигает 360  км ч, а дальность зрения достигает 3000 метров`, zoopark)
-let shebet = new Animal('Щебет', 22, 1, `максимальная достигает скорость полета достигает 320  км ч, а дальность зрения достигает 2000 метров`, zoopark)
+let swist = new Animal('Bird1', 8, 1, `максимальная скорость полета достигает  40  км ч, а дальность зрения достигает 1000 метров`, zoopark)
+let shebet = new Animal('Bird2', 6, 1, `максимальная скорость полета достигает  40  км ч, а дальность зрения достигает 1000 метров`, zoopark)
 let misha = new Animal('Миша', 3, 3, `этот вид медведей обитает в Финляндии сейчас медведь не в спячке`, zoopark)
 
 let menu
@@ -180,20 +196,21 @@ do{
             break
         }
         case 4:{
-            if(zoopark.getLengthCase != 0) zoopark.getShowAllAnimal()
+            if(zoopark.getLengthCase() != 0) zoopark.getShowAllAnimal()
             break
         }
         case 5:{
-            
+            if(zoopark.getLengthCase() != 0) zoopark.getThreeOldAnimals()
             break
         }
         case 6:{
+            console.log(`клеток свободно ${5 - zoopark.getLengthCase()}`)
             break
         }
         case 7:{
-            break
-        }
-        case 8:{
+            if(zoopark.getLengthCase == 0) break
+            let name = prompt('Имя животного')
+            zoopark.getInfoAnimal(name)
             break
         }
     }
