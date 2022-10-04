@@ -254,10 +254,126 @@ do{
 и т.д
 */
 
+Object.prototype.chekNum = function(){
+    return isNaN(Number(this))
+}
+Object.prototype.percent = function(sum, percent){
+    return sum + Math.floor(sum / 100 * percent)
+}
 
-// function Bank(){
-//     this.__clients = []
-// }
+
+
+
+function Bank(){
+    this.__clients = []
+    this.setAddClient = function(client){
+        this.__clients.push(client)
+    }
+    this.setAddMoney = function(numCardUser, money){
+        this.__clients.forEach(client =>{
+            if(client.getNumCard() == numCardUser) client.setAddMoney(money)
+        })
+    }
+    this.setRemoveMoney = function(money, numCard, pin){
+        this.__clients.forEach(client =>{
+                if(client.getNumCard() == numCard && client.getPin() == pin && client.getMoney() > (money + percent(money, 1)) ) {
+                client.setRemoveMoney(percent(money, 1))
+            }
+        })
+    }
+    this.getClientsLength = function(){
+        return this.__clients.length
+    }
+    this.setSendMoney = function(userNumCard, sendNumCard, pin, money){
+        let userCard = this.__clients.findIndex(client => client.getNumCard() == userNumCard)
+        let sendCard = this.__clients.findIndex(client => client.getNumCard() == sendNumCard)
+        if(this.__clients[userCard].getPin() == pin && this.__clients[userCard].getMoney() > percent(money, 3)){
+            this.__clients[userCard].setRemoveMoney(percent(money, 3))
+            this.__clients[sendCard].setAddMoney(money)
+        }
+    }
+    this.setShowMoney = function(numCard, pin){
+        this.__clients.forEach(client => {
+            if(client.getNumCard() == numCard && client.getPin() == pin){
+                console.log(`На карте ${numCard} - ${client.getMoney()}`)
+            }
+        })
+    }
+}
+
+function Client(pin, numCard, bank){
+    this.__numCard = numCard
+    this.__pin = pin
+    this.__money = 100
+    this.getNumCard = function(){
+        return this.__numCard
+    }
+    this.getPin = function(){
+        return this.__pin
+    }
+    this.getMoney = function(){
+        return this.__money
+    }
+    this.setAddMoney = function(money){
+        this.__money += money
+    }
+    this.setRemoveMoney = function(money){
+        this.__money -= money
+    }
+    bank.setAddClient(this)
+}
+
+let bank = new Bank()
+
+// let client = new Client(1234, 1234, bank)
+// let client2 = new Client(1234, 2341, bank)
+
+let menu
+
+do{
+    menu = +prompt('Банк \n 1 - Открыть счет в банке \n 2 - Пополнить счет в банке \n 3 - Снять деньги с карты \n 4 - переслать деньги на другую карту \n 5 - Посмотреть счет в банке \n 6 - Выйти')
+    switch(menu){
+        case 1:{
+            let numCard = ``
+            for(let i = 0; i != 4; i++) numCard += Math.round(Math.random() * 9)
+
+            let pin = +prompt('Введите пин карты')
+            if(pin != '' && pin.toString().length == 4 && pin.chekNum() == false){
+                console.log(`номер карты: ${numCard}\nпин карты: ${pin}`)
+                let client = new Client(pin, numCard, bank)
+            }
+            break
+        }
+        case 2:{
+            let money = +prompt('Введите сумму пололнения')
+            let numCard = prompt('Введите номер карты')
+            if(money != '' && numCard != '' && money > 0) bank.setAddMoney(numCard, money)
+            break
+        }
+        case 3:{
+            let money = +prompt('Введите сумму снятия')
+            let numCard = +prompt('Введите номер карты')
+            let pin = +prompt('Введите пин карты')
+            if(numCard != '' && pin != '' && money > 0) bank.setRemoveMoney(money, numCard, pin)
+            break
+        }
+        case 4:{
+            let userNumCard = +prompt('Номер вашей карты')
+            let pin = +prompt('Ваш пин')
+            let sendNumCard = +prompt('Номер карты кому переслать')
+            let money = +prompt('Введите сумму')
+            if(userNumCard != '' && sendNumCard != '' && pin != '' && money != '' && money > 0 && bank.getClientsLength() >= 2) bank.setSendMoney(userNumCard, sendNumCard, pin, money)
+            break
+        }
+        case 5:{
+            let numCard = +prompt('Введите номер карты')
+            let pin = +prompt('Введите пин карты')
+            if(numCard != '' && pin != '') bank.setShowMoney(numCard, pin)
+            break
+        }
+    }
+}while(menu != 6);
+
 
 
 
